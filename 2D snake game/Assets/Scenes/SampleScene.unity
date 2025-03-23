@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 304306412}
   m_Layer: 0
   m_Name: Wall (S)
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -448,7 +448,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.08254717, g: 0.17869036, b: 0.3301887, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -638,6 +638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   segmentPrefab: {fileID: 6280347315596286745, guid: 68a2b8abfdda642f48ac60c4be6746dc, type: 3}
+  initialSize: 4
 --- !u!61 &855201245
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -756,7 +757,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: d1a3eeff1ed494e66975f264ee2ab2ad, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.100737095, a: 1}
+  m_Color: {r: 0.11016953, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -794,7 +795,7 @@ GameObject:
   - component: {fileID: 1355533918}
   m_Layer: 0
   m_Name: Wall (E)
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -928,7 +929,7 @@ GameObject:
   - component: {fileID: 1946037788}
   m_Layer: 0
   m_Name: Wall (W)
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1210,7 +1211,7 @@ GameObject:
   - component: {fileID: 2114380940}
   m_Layer: 0
   m_Name: Wall (N)
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
