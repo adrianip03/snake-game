@@ -10,8 +10,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // StartCoroutine(StartGame());
-        score = -1;
-        UpdateScoreText();
+        ResetScore();
     }
 
     // Update is called once per frame
@@ -20,9 +19,19 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void UpdateScoreText()
+    private void UpdateScoreText()
     {
-        score += 1;
         scoreText.text = "Score: " + score;
+    }
+    public void ResetScore()
+    {
+        score = 0;
+        UpdateScoreText();
+    }
+
+    public void UpdateScore(int points)
+    {
+        score += points;
+        UpdateScoreText();
     }
 }

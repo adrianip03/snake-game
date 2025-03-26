@@ -164,7 +164,7 @@ public class Snake : MonoBehaviour
         if (other.tag == "Food")
         {
             Grow();
-            gameManager.UpdateScoreText();
+            gameManager.UpdateScore(1);
         } else if (other.tag == "Obstacle")
         {
             // Game over
