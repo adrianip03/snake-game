@@ -1,47 +1,13 @@
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class FollowPlayer : MonoBehaviour
 {
-    [Header("Target Settings")]
-    [SerializeField] private Transform target;
-    [SerializeField] private Vector2 offset = new Vector2(0f, 0f);
-    
-    [Header("Smooth Settings")]
-    [SerializeField] private float smoothSpeed = 5f;
-    [SerializeField] private float minY = -10f;
-    [SerializeField] private float maxY = 10f;
-    
-    private Camera mainCamera;
-    private Vector3 velocity = Vector3.zero;
+    public GameObject player;
+    private Vector3 offset = new Vector3(0,0,-10);
 
-    private void Start()
+    // Update is called once per frame
+    void LateUpdate()
     {
-        mainCamera = GetComponent<Camera>();
-        
-        if (target == null)
-        {
-            Debug.LogWarning("Camera target not assigned! Please assign the snake object in the inspector.");
-            return;
-        }
+        transform.position = player.transform.position + offset;
     }
-
-    private void LateUpdate()
-    {
-        if (target == null) return;
-
-        // Calculate target position with offset
-        Vector3 targetPosition = new Vector3(
-            target.position.x + offset.x,
-            Mathf.Clamp(target.position.y + offset.y, minY, maxY),
-            transform.position.z
-        );
-
-        // Smoothly move the camera
-        transform.position = Vector3.SmoothDamp(
-            transform.position,
-            targetPosition,
-            ref velocity,
-            1f / smoothSpeed
-        );
-    }
-} 
+}

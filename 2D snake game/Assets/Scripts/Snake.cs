@@ -6,15 +6,17 @@ public class Snake : MonoBehaviour
     private Vector2 direction = Vector2.up;
     private Vector2 newDirection = Vector2.up;
     private Vector2 mouseStartPosition;
-    private List<Transform> segments = new List<Transform>();
+    public List<Transform> segments = new List<Transform>();
     public Transform segmentPrefab;
     private float baseHue = 0.33f; // Green hue in HSV
     public int initialSize = 4;
-    private float tStep = 0.06f;
+    public float tStep = 0.06f;
+    private GameManager gameManager;
 
     private void Start()
     {
         ResetState();
+        gameManager = FindObjectOfType<GameManager>();
     }
     private void Update()
     {
@@ -110,18 +112,26 @@ public class Snake : MonoBehaviour
         for (int i = segments.Count - 1; i > 0; i--)
         {
             segments[i].position = segments[i - 1].position;
+            if (i == 1){
+                segments[i].transform.eulerAngles = new Vector3(0, 0, (GetAngle(direction) + GetAngle(newDirection))/2 - 90);
+                Debug.Log($"Segment[0] Euler Angle: {segments[0].eulerAngles.z}");
+            }
+            else if (i > 0){
+                segments[i].transform.eulerAngles = segments[i - 1].transform.eulerAngles;
+            }
         }
         
         this.transform.position = new Vector2(
             Mathf.Round(this.transform.position.x) + newDirection.x,
             Mathf.Round(this.transform.position.y) + newDirection.y
         );
+        this.transform.eulerAngles = new Vector3(0, 0, GetAngle(newDirection)-90);
         direction = newDirection;
 
-        UpdateSegmentColors();
+        UpdateSegmentStyle();
     }
 
-    private void UpdateSegmentColors()
+    private void UpdateSegmentStyle()
     {
         for (int i = 0; i < segments.Count; i++)
         {
@@ -132,6 +142,12 @@ public class Snake : MonoBehaviour
                 float brightness = 0.5f + ((float)(segments.Count - i) / segments.Count) * 0.5f;
                 Color color = Color.HSVToRGB(baseHue, 0.7f, brightness);
                 renderer.color = color;
+
+                if (i !=0){
+                    // Calculate width based on segment position
+                    float width = 0.5f + ((float)(segments.Count - i - 1) / segments.Count) * 0.25f;
+                    renderer.transform.localScale = new Vector3(width, 1, 1);
+                }
             }
         }
     }
@@ -141,7 +157,7 @@ public class Snake : MonoBehaviour
         Transform segment = Instantiate(this.segmentPrefab);
         segment.position = segments[segments.Count - 1].position;
         segments.Add(segment);
-        UpdateSegmentColors(); // Update colors when growing
+        UpdateSegmentStyle(); // Update colors when growing
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -149,6 +165,7 @@ public class Snake : MonoBehaviour
         if (other.tag == "Food")
         {
             Grow();
+            gameManager.UpdateScoreText();
         } else if (other.tag == "Obstacle")
         {
             // Game over
@@ -164,7 +181,7 @@ public class Snake : MonoBehaviour
         }
         segments.Clear();
         segments.Add(this.transform);
-        UpdateSegmentColors();
+        UpdateSegmentStyle();
 
         direction = Vector2.up;
         this.transform.position = Vector2.zero;
@@ -179,6 +196,16 @@ public class Snake : MonoBehaviour
             );
             segments.Add(segment);
         }
-        UpdateSegmentColors();
+        UpdateSegmentStyle();
+    }
+
+    private float GetAngle(Vector2 direction)
+    {
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        if (angle < 0)
+        {
+            angle += 360;
+        }
+        return angle;
     }
 }
