@@ -1559,6 +1559,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridArea: {fileID: 374066751}
   snake: {fileID: 855201244}
+  foodEffect: {fileID: 1030550166442990340, guid: b9c2a870c41764467bbd0a02e64028aa, type: 3}
 --- !u!1 &2114380938
 GameObject:
   m_ObjectHideFlags: 0

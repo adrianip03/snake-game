@@ -5,6 +5,7 @@ public class Food : MonoBehaviour
 {
     public BoxCollider2D gridArea;
     public Snake snake; // Reference to the snake
+    public ParticleSystem foodEffect;
 
     private void Start()
     {
@@ -42,6 +43,8 @@ public class Food : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            ParticleSystem effect = Instantiate(foodEffect, transform.position, Quaternion.identity);
+            Destroy(effect.gameObject, effect.main.duration);
             RandomizePosition();
         }
     }

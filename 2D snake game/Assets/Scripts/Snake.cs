@@ -114,7 +114,6 @@ public class Snake : MonoBehaviour
             segments[i].position = segments[i - 1].position;
             if (i == 1){
                 segments[i].transform.eulerAngles = new Vector3(0, 0, (GetAngle(direction) + GetAngle(newDirection))/2 - 90);
-                Debug.Log($"Segment[0] Euler Angle: {segments[0].eulerAngles.z}");
             }
             else if (i > 0){
                 segments[i].transform.eulerAngles = segments[i - 1].transform.eulerAngles;
