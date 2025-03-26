@@ -16,7 +16,7 @@ public class Snake : MonoBehaviour
     private void Start()
     {
         ResetState();
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = FindFirstObjectByType<GameManager>();
     }
     private void Update()
     {
