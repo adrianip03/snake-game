@@ -12,14 +12,30 @@ public class Snake : MonoBehaviour
     public int initialSize = 4;
     public float tStep = 0.06f;
     private GameManager gameManager;
+    private bool isActive = false;
 
     private void Start()
     {
-        ResetState();
         gameManager = FindFirstObjectByType<GameManager>();
+        ResetState();
     }
+
+    public void OnGameStart()
+    {
+        isActive = true;
+        ResetState();
+    }
+
+    public void OnGameOver()
+    {
+        isActive = false;
+    }
+
     private void Update()
     {
+        
+        if (!isActive) return;
+
         // Handle keyboard input
         if (Input.GetKeyDown(KeyCode.W) && direction != Vector2.down)
         {
@@ -109,9 +125,15 @@ public class Snake : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!isActive) return;
+
         for (int i = segments.Count - 1; i > 0; i--)
         {
-            segments[i].position = segments[i - 1].position;
+            segments[i].position = new Vector3(
+                segments[i - 1].position.x,
+                segments[i - 1].position.y,
+                0.0f
+            );
             if (i == 1){
                 segments[i].transform.eulerAngles = new Vector3(0, 0, (GetAngle(direction) + GetAngle(newDirection))/2 - 90);
             }
@@ -120,9 +142,10 @@ public class Snake : MonoBehaviour
             }
         }
         
-        this.transform.position = new Vector2(
+        this.transform.position = new Vector3(
             Mathf.Round(this.transform.position.x) + newDirection.x,
-            Mathf.Round(this.transform.position.y) + newDirection.y
+            Mathf.Round(this.transform.position.y) + newDirection.y,
+            -1.0f
         );
         this.transform.eulerAngles = new Vector3(0, 0, GetAngle(newDirection)-90);
         direction = newDirection;
@@ -168,7 +191,7 @@ public class Snake : MonoBehaviour
         } else if (other.tag == "Obstacle")
         {
             // Game over
-            ResetState();
+            gameManager.GameOver();
         }
     }
     private void ResetState()
@@ -180,10 +203,10 @@ public class Snake : MonoBehaviour
         }
         segments.Clear();
         segments.Add(this.transform);
-        UpdateSegmentStyle();
 
         direction = Vector2.up;
-        this.transform.position = Vector2.zero;
+        newDirection = Vector2.up;
+        this.transform.position = new Vector3(0f, 0f, -10f);
 
         // Add initial segments in a vertical line below the head
         for (int i = 1; i < this.initialSize; i++)
