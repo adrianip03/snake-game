@@ -3,21 +3,19 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI tapToStartText;
     public bool isGameActive = false;
     public Snake snake;
     public Food food;
-    private int score = 0;
-
+    public ScoreBoard scoreBoard;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         isGameActive = false;
         gameOverText.gameObject.SetActive(false);
         tapToStartText.gameObject.SetActive(true);
-        ResetScore();
+        scoreBoard.ResetScore();
     }
 
     void Update()
@@ -50,28 +48,13 @@ public class GameManager : MonoBehaviour
         isGameActive = true;
         gameOverText.gameObject.SetActive(false);
         tapToStartText.gameObject.SetActive(false);
-        ResetScore();
+        scoreBoard.ResetScore();
         snake.OnGameStart();
         food.OnGameStart();
     }
-
-    private void UpdateScoreText()
-    {
-        scoreText.text = "Score: " + score;
-    }
-    public void ResetScore()
-    {
-        score = 0;
-        UpdateScoreText();
-    }
-
-    public void UpdateScore(int points)
-    {
-        score += points;
-        UpdateScoreText();
-    }
     public void GameOver()
     {
+        scoreBoard.UpdateHighScore();
         gameOverText.gameObject.SetActive(true);
         tapToStartText.gameObject.SetActive(true);
         tapToStartText.text = "Tap to restart";

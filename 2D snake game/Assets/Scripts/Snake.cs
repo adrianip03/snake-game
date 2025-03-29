@@ -13,7 +13,7 @@ public class Snake : MonoBehaviour
     public float tStep = 0.06f;
     private GameManager gameManager;
     private bool isActive = false;
-
+    public ScoreBoard scoreBoard;
     private void Start()
     {
         gameManager = FindFirstObjectByType<GameManager>();
@@ -187,7 +187,7 @@ public class Snake : MonoBehaviour
         if (other.tag == "Food")
         {
             Grow();
-            gameManager.UpdateScore(1);
+            scoreBoard.UpdateScore(1);
         } else if (other.tag == "Obstacle")
         {
             // Game over
