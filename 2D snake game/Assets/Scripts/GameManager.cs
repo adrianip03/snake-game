@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public Snake snake;
     public Food food;
     public ScoreBoard scoreBoard;
+    public DatabaseAccess databaseAccess;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -61,5 +62,6 @@ public class GameManager : MonoBehaviour
         isGameActive = false;
         snake.OnGameOver();
         food.OnGameOver();
+        databaseAccess.SaveData(scoreBoard.getScore(), 0);
     }
 }
