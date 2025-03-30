@@ -39,13 +39,15 @@ public class Food : MonoBehaviour
         {
             float x = Random.Range(bounds.min.x, bounds.max.x);
             float y = Random.Range(bounds.min.y, bounds.max.y);
-            newPosition = new Vector3(Mathf.Round(x), Mathf.Round(y), 0.0f);
+            newPosition = new Vector3(Mathf.Round(x), Mathf.Round(y), -1.0f);
 
             // Check if position overlaps with any snake segment
             validPosition = true;
             foreach (Transform segment in snake.segments)
             {
-                if (Vector3.Distance(newPosition, segment.position) < 1f)
+                Vector3 segmentPosAtFoodZ = segment.position;
+                segmentPosAtFoodZ.z = -1.0f; // Match food's z coordinate
+                if (Vector3.Distance(newPosition, segmentPosAtFoodZ) < 1f)
                 {
                     validPosition = false;
                     break;
