@@ -34,9 +34,6 @@ public class ScoreBoard : MonoBehaviour
 
     public void UpdateHighScore()
     {
-        Debug.Log("Updating high score");
-        Debug.Log("Current score: " + score);
-        Debug.Log("High score: " + PlayerPrefs.GetInt("HighScore"));
         if (score > PlayerPrefs.GetInt("HighScore"))
         {
             if (!newHighScoreText.gameObject.activeSelf)
@@ -46,5 +43,10 @@ public class ScoreBoard : MonoBehaviour
             PlayerPrefs.SetInt("HighScore", score);
             UpdateHighScoreText();
         }
+    }
+
+    public int getScore()
+    {
+        return score;
     }
 }
