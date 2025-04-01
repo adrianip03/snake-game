@@ -65,6 +65,6 @@ public class GameManager : MonoBehaviour
         snake.OnGameOver();
         food.OnGameOver();
         stopwatch.onGameOver();
-        databaseAccess.SaveData(scoreBoard.getScore(), 0);
+        databaseAccess.SaveData(scoreBoard.getScore(), stopwatch.getTime());
     }
 }
