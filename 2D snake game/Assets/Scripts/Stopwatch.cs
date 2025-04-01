@@ -24,6 +24,9 @@ public class Stopwatch : MonoBehaviour
         if (active)
         {
             float timeElapsed = Time.time - startTime;
+            // Cap at 99:59:59 to prevent overflow
+            timeElapsed = Mathf.Min(timeElapsed, 359999f); // 99 hours, 59 minutes, 59 seconds
+            
             int hours = (int)(timeElapsed / 3600);
             int minutes = (int)((timeElapsed % 3600) / 60);
             int seconds = (int)(timeElapsed % 60);
