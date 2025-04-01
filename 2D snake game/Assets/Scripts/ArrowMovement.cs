@@ -52,12 +52,41 @@ public class ArrowMovement : MonoBehaviour
             // Set arrow position at screen edge
             Vector3 snakeScreenPos = mainCamera.WorldToScreenPoint(snake.position);
             Vector3 screenPos = foodScreenPos;
-            screenPos.x = Mathf.Clamp(screenPos.x, padding, Screen.width - padding);
-            screenPos.y = (snakeScreenPos.y-foodScreenPos.y)/(snakeScreenPos.x-foodScreenPos.x)*(screenPos.x-snakeScreenPos.x)+snakeScreenPos.y;
-            if (screenPos.y < padding || screenPos.y > Screen.height - padding) {
-                screenPos.y = Mathf.Clamp(screenPos.y, padding, Screen.height - padding);
-                screenPos.x = (screenPos.y-snakeScreenPos.y)/(foodScreenPos.y-snakeScreenPos.y)*(foodScreenPos.x-snakeScreenPos.x)+snakeScreenPos.x;
+            
+            // Calculate direction vector
+            Vector2 directionVec = foodScreenPos - snakeScreenPos;
+            float dx = Mathf.Abs(directionVec.x);
+            float dy = Mathf.Abs(directionVec.y);
+            
+            // Handle different cases based on direction to prevent division by zero
+            if (dx < 0.01f) {
+                // Vertical case
+                screenPos.x = snakeScreenPos.x;
+                screenPos.y = directionVec.y > 0 ? Screen.height - padding : padding;
             }
+            else if (dy < 0.01f) {
+                // Horizontal case
+                screenPos.y = snakeScreenPos.y;
+                screenPos.x = directionVec.x > 0 ? Screen.width - padding : padding;
+            }
+            else {
+                // Diagonal case
+                float slope = directionVec.y / directionVec.x;
+                if (directionVec.x > 0) {
+                    screenPos.x = Screen.width - padding;
+                    screenPos.y = snakeScreenPos.y + slope * (screenPos.x - snakeScreenPos.x);
+                } else {
+                    screenPos.x = padding;
+                    screenPos.y = snakeScreenPos.y + slope * (screenPos.x - snakeScreenPos.x);
+                }
+                
+                // Clamp y position if it goes off screen
+                if (screenPos.y < padding || screenPos.y > Screen.height - padding) {
+                    screenPos.y = screenPos.y < padding ? padding : Screen.height - padding;
+                    screenPos.x = snakeScreenPos.x + (screenPos.y - snakeScreenPos.y) / slope;
+                }
+            }
+            
             transform.position = mainCamera.ScreenToWorldPoint(screenPos);
         }
         else
