@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     public ScoreBoard scoreBoard;
     public Stopwatch stopwatch;
     public DatabaseAccess databaseAccess;
-    public DatabaseAccess databaseAccess;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
