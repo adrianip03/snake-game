@@ -1,10 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
+using System.Text;
+using Newtonsoft.Json;
+using System;
 
 public class DatabaseAccess : MonoBehaviour
 {
-    private string webUrl = "http://localhost:8888/sqlconnect/newRun.php";
+    private string baseUrl = "http://localhost:3000";
+    private string saveUrl => $"{baseUrl}/newRun";
 
     public void SaveData(int score, int time)
     {
@@ -13,28 +17,23 @@ public class DatabaseAccess : MonoBehaviour
 
     IEnumerator SaveDataCoroutine(int score, int time)
     {
-        WWWForm form = new WWWForm();
-        form.AddField("score", score);
-        form.AddField("time", time);
+        var data = new { score = score, time = time };
+        string jsonData = JsonConvert.SerializeObject(data);
+        Debug.Log(jsonData);
         
-        using (UnityWebRequest www = UnityWebRequest.Post(webUrl, form))
+        using (UnityWebRequest www = UnityWebRequest.Post(saveUrl, jsonData, "application/json"))
         {
             yield return www.SendWebRequest();
+            
             if (www.result == UnityWebRequest.Result.Success)
             {
-                if (www.downloadHandler.text == "0")
-                {
-                    Debug.Log("Data saved successfully");
-                }
-                else
-                {
-                    Debug.Log("Failed to save data. Error: " + www.downloadHandler.text);
-                }
+                Debug.Log("Score saved successfully");
             }
             else
             {
-                Debug.Log("Error: " + www.error);
+                Debug.LogError($"Error saving score: {www.error}");
             }
         }
     }
+    
 }
